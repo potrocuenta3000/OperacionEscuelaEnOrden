@@ -62,6 +62,45 @@ const btnDerecha =
 
 const btnInteractuar =
     document.getElementById("btnInteractuar");
+    btnArriba.addEventListener(
+    "mousedown",
+    () => iniciarMovimiento(0,-velocidad)
+);
+
+btnAbajo.addEventListener(
+    "mousedown",
+    () => iniciarMovimiento(0,velocidad)
+);
+
+btnIzquierda.addEventListener(
+    "mousedown",
+    () => iniciarMovimiento(-velocidad,0)
+);
+
+btnDerecha.addEventListener(
+    "mousedown",
+    () => iniciarMovimiento(velocidad,0)
+);
+
+btnArriba.addEventListener(
+    "mouseup",
+    detenerMovimiento
+);
+
+btnAbajo.addEventListener(
+    "mouseup",
+    detenerMovimiento
+);
+
+btnIzquierda.addEventListener(
+    "mouseup",
+    detenerMovimiento
+);
+
+btnDerecha.addEventListener(
+    "mouseup",
+    detenerMovimiento
+);
 
 const controlesMovil =
     document.getElementById("controlesMovil");
@@ -436,38 +475,48 @@ function actualizarEstado() {
     return false;
 }
 
-    function realizarAccion(elemento, mensaje) {
-        if (getComputedStyle(elemento).display === "none") {
-            return false;
-        }
+   function realizarAccion(elemento, mensaje) {
 
-socket.emit(
-    "tareaCompletada",
-    {
-        sala: codigoSala,
-        id: elemento.id
+    if (getComputedStyle(elemento).display === "none") {
+        return false;
     }
-);
-        if (
-            distanciaEntreElementos(contenedorJugador, elemento) >
-            distanciaMaxima
-        ) {
-            return false;
-        }
 
-        elemento.style.display = "none";
-        estadoEscuela = Math.min(100, estadoEscuela + 4.76190476);
-        if(estadoEscuela > 99.9){
-    estadoEscuela = 100;
+    if (
+        distanciaEntreElementos(
+            contenedorJugador,
+            elemento
+        ) > distanciaMaxima
+    ) {
+        return false;
+    }
+
+    elemento.style.display = "none";
+
+    socket.emit(
+        "tareaCompletada",
+        {
+            sala: codigoSala,
+            id: elemento.id
+        }
+    );
+
+    estadoEscuela = Math.min(
+        100,
+        estadoEscuela + 4.76190476
+    );
+
+    if(estadoEscuela > 99.9){
+        estadoEscuela = 100;
+    }
+
+    actualizarEstado();
+
+    mostrarNotificacion(
+        mensaje
+    );
+
+    return true;
 }
-
-
-        actualizarEstado();
-        mostrarNotificacion(mensaje);
-
-        return true;
-    }
-
     function limitarPosicionJugador() {
         const limiteX = Math.max(
             0,
@@ -597,6 +646,9 @@ for(let i = 0; i < 12; i++){
 
     const tarea =
         document.createElement("div");
+
+        tarea.id =
+    "tareaExtra" + i;
 
     tarea.textContent =
         iconos[
@@ -734,51 +786,88 @@ actualizarVidas();
         }, 100);
 if(btnArriba){
 
+    let moverInterval;
+
+    function iniciarMovimiento(dx, dy){
+
+        clearInterval(moverInterval);
+
+        moverInterval = setInterval(
+            () => moverJugador(dx, dy),
+            50
+        );
+    }
+
+    function detenerMovimiento(){
+
+        clearInterval(
+            moverInterval
+        );
+    }
+
     btnArriba.addEventListener(
-        "click",
-        () => moverJugador(0,-velocidad)
+        "touchstart",
+        () => iniciarMovimiento(0,-velocidad)
     );
 
     btnAbajo.addEventListener(
-        "click",
-        () => moverJugador(0,velocidad)
+        "touchstart",
+        () => iniciarMovimiento(0,velocidad)
     );
 
     btnIzquierda.addEventListener(
-        "click",
-        () => moverJugador(-velocidad,0)
+        "touchstart",
+        () => iniciarMovimiento(-velocidad,0)
     );
 
     btnDerecha.addEventListener(
-        "click",
-        () => moverJugador(velocidad,0)
+        "touchstart",
+        () => iniciarMovimiento(velocidad,0)
+    );
+
+    btnArriba.addEventListener(
+        "touchend",
+        detenerMovimiento
+    );
+
+    btnAbajo.addEventListener(
+        "touchend",
+        detenerMovimiento
+    );
+
+    btnIzquierda.addEventListener(
+        "touchend",
+        detenerMovimiento
+    );
+
+    btnDerecha.addEventListener(
+        "touchend",
+        detenerMovimiento
     );
 
     btnInteractuar.addEventListener(
         "click",
         () => {
 
-            if(
-                realizarAccion(
-                    basura,
-                    "✅ Basura recogida"
-                )
-            ) return;
+            const tareas =
+                document.querySelectorAll(
+                    "#basura, #pizarron, #silla, #foco, .tareaExtra"
+                );
 
-            if(
-                realizarAccion(
-                    pizarron,
-                    "✅ Pizarrón limpiado"
-                )
-            ) return;
+            for(const tarea of tareas){
 
-            realizarAccion(
-                silla,
-                "✅ Silla reparada"
-            );
-
+                if(
+                    realizarAccion(
+                        tarea,
+                        "✅ Tarea completada"
+                    )
+                ){
+                    return;
+                }
+            }
         }
     );
+
 }
     actualizarTemporizador();
 
