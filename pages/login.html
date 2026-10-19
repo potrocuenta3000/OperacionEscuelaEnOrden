@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+    <link
+rel="icon"
+type="image/png"
+href="../img/favicon.png">
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <main class="contenedor">
+        <div class="avatar" aria-hidden="true">👨‍🎓</div>
+
+        <h1>INICIAR SESIÓN</h1>
+
+        <form class="formulario" id="formLogin">
+            <label for="loginUsuario">Usuario</label>
+            <input
+                type="text"
+                id="loginUsuario"
+                name="usuario"
+                placeholder="Ingresa tu usuario"
+                autocomplete="username"
+                required
+            >
+
+            <label for="loginPassword">Contraseña</label>
+            <input
+                type="password"
+                id="loginPassword"
+                name="password"
+                placeholder="Ingresa tu contraseña"
+                autocomplete="current-password"
+                required
+            >
+
+            <button id="btnLogin" type="submit">
+                ENTRAR
+            </button>
+        </form>
+    </main>
+
+    <script src="../js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Escolar</title>
+    <link
+rel="icon"
+type="image/png"
+href="../img/favicon.png">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <style>
+       .mapa {
+
+    width: 1400px;
+
+    height: 900px;
+
+    position: relative;
+
+    margin: 0 auto;
+
+    overflow: hidden;
+
+    background:
+linear-gradient(
+180deg,
+#7cb342,
+#a5d6a7
+);
+
+    box-sizing: border-box;
+}
+.zona {
+
+    position:absolute;
+
+    border:3px solid #2d3436;
+
+    border-radius:15px;
+
+    background:#ecf0f1;
+
+    text-align:center;
+
+    font-weight:bold;
+
+    padding-top:20px;
+
+    box-sizing:border-box;
+
+    box-shadow:
+        0 5px 12px rgba(0,0,0,.25);
+}
+
+        #entrada {
+            width: 200px;
+            height: 100px;
+            left: 20px;
+            top: 20px;
+        }
+
+        #salon {
+            width: 250px;
+            height: 120px;
+            left: 320px;
+            top: 20px;
+        }
+
+        #biblioteca {
+            width: 200px;
+            height: 100px;
+            right: 20px;
+            top: 20px;
+        }
+
+        #patio {
+            width: 350px;
+            height: 200px;
+            left: 275px;
+            top: 220px;
+        }
+
+        #direccion {
+            width: 180px;
+            height: 90px;
+            left: 50px;
+            bottom: 40px;
+        }
+
+        #banos {
+            width: 180px;
+            height: 90px;
+            right: 50px;
+            bottom: 40px;
+        }
+
+        #contenedorJugador {
+            position: absolute;
+            left: 420px;
+            top: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #nombreJugador {
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px black;
+            margin-bottom: 5px;
+        }
+
+        #jugador {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: blue;
+            border: 2px solid white;
+            box-sizing: border-box;
+            box-shadow:0 0 15px rgba(255,255,255,.8);
+            box-shadow:
+    0 0 15px rgba(255,255,255,.9);
+    box-shadow:
+0 0 20px white;
+
+        }
+
+        #basura {
+            position: absolute;
+            left: 330px;
+            top: 310px;
+            font-size: 40px;
+        }
+
+        #pizarron {
+            position: absolute;
+            left: 430px;
+            top: 80px;
+            font-size: 40px;
+        }
+
+        #silla {
+    position: absolute;
+    left: 720px;
+    top: 330px;
+    font-size: 40px;
+}
+#foco{
+
+    position:absolute;
+
+    left:850px;
+
+    top:150px;
+
+    font-size:40px;
+}
+
+#enemigo {
+
+    position:absolute;
+
+    left:1000px;
+
+    top:500px;
+
+    font-size:45px;
+
+    z-index:50;
+
+    filter:
+    drop-shadow(
+        0 0 12px red
+    );
+
+    animation:
+    brillarBot 1s infinite;
+    @keyframes brillarBot {
+
+    0%{
+
+        transform:scale(1);
+    }
+
+    50%{
+
+        transform:scale(1.1);
+    }
+
+    100%{
+
+        transform:scale(1);
+    }
+}
+
+}
+
+#estadoEscuela {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight:bold;
+
+text-shadow:
+    0 0 6px rgba(255,255,255,.5);
+        }
+
+        #vidas{
+
+    color:red;
+
+    font-size:35px;
+
+    font-weight:bold;
+
+    text-shadow:
+    0 0 10px rgba(255,0,0,.6);
+}
+
+#temporizador{
+
+    color:#f1c40f;
+
+    font-size:32px;
+
+    font-weight:bold;
+
+    text-shadow:
+    0 0 10px rgba(241,196,15,.8);
+}
+       
+#contenedorBarra {
+            width: 350px;
+            height: 30px;
+            background: #444;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 auto 20px;
+        }
+
+        #barraEstado {
+
+    width:70%;
+
+    height:100%;
+
+    background:linear-gradient(
+        90deg,
+        #27ae60,
+        #2ecc71
+    );
+
+    transition:width .3s ease;
+}
+
+        #notificacion {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #2e7d32;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+        }
+        .pasillo{
+
+    position:absolute;
+
+    background:#d5d5d5;
+
+    border-radius:10px;
+}
+
+.horizontal{
+
+    height:50px;
+}
+
+.vertical{
+
+    width:50px;
+}
+
+.superior{
+
+    top:170px;
+    left:175px;
+    width:950px;
+}
+
+.centro{
+
+    top:440px;
+    left:175px;
+    width:950px;
+}
+
+.inferior{
+
+    top:770px;
+    left:175px;
+    width:950px;
+}
+
+.izquierda{
+
+    left:175px;
+    top:170px;
+    height:650px;
+}
+
+.centrov{
+
+    left:625px;
+    top:170px;
+    height:650px;
+}
+
+.derecha{
+
+    left:1075px;
+    top:170px;
+    height:650px;
+}
+
+.puerta{
+
+    position:absolute;
+
+    font-size:40px;
+
+    z-index:100;
+
+    filter: drop-shadow(
+        0 0 5px rgba(0,0,0,.4)
+    );
+}
+
+.pared{
+
+    position:absolute;
+
+    background:#555;
+
+    z-index:5;
+}
+
+.pared{
+
+    position:absolute;
+
+    background:#444;
+
+    z-index:10;
+}
+
+.pared1{
+    left:40px;
+    top:40px;
+    width:8px;
+    height:800px;
+}
+
+.pared2{
+    left:1360px;
+top:40px;
+width:8px;
+height:800px;
+}
+
+.pared3{
+    left:40px;
+    top:40px;
+    width:1320px;
+    height:8px;
+}
+
+.pared4{
+    left:40px;
+    top:830px;
+    width:1320px;
+    height:8px;
+}
+.tareaExtra{
+
+    position:absolute;
+
+    font-size:40px;
+
+    z-index:15;
+}
+
+#cuentaAtras{
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.8);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 150px;
+
+    font-weight: bold;
+
+    color: white;
+
+    z-index: 99999;
+}
+#controlesMovil{
+
+    position: fixed;
+
+    bottom: 20px;
+
+    right: 20px;
+
+    display: none;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 10px;
+
+    z-index: 99999;
+}
+
+.filaControles{
+
+    display: flex;
+
+    gap: 10px;
+}
+
+#controlesMovil button{
+
+    width: 70px;
+
+    height: 70px;
+
+    font-size: 24px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    background: rgba(255,255,255,0.8);
+}   
+   </style>
+</head>
+<body>
+    <div id="notificacion"></div>
+<div id="cuentaAtras">
+    3
+</div>
+    <main class="contenedor">
+        <h1>MAPA ESCOLAR</h1>
+
+        <div id="estadoEscuela">Estado de la Escuela: 70%</div>
+<div id="vidas">
+    ❤️ ❤️ ❤️
+</div>
+<div id="temporizador">
+    ⏳ 05:00
+</div>
+        <div id="contenedorBarra">
+            <div id="barraEstado"></div>
+        </div>
+
+       <div class="mapa">
+        <!-- PASILLOS -->
+
+<div class="pasillo horizontal superior"></div>
+
+<div class="pasillo horizontal centro"></div>
+
+<div class="pasillo horizontal inferior"></div>
+
+<div class="pasillo vertical izquierda"></div>
+
+<div class="pasillo vertical centrov"></div>
+
+<div class="pasillo vertical derecha"></div>
+
+
+<!-- PUERTAS -->
+
+<div class="puerta" style="left:145px; top:160px;">🚪</div>
+
+<div class="puerta" style="left:595px; top:160px;">🚪</div>
+
+<div class="puerta" style="left:1045px; top:160px;">🚪</div>
+
+<div class="puerta" style="left:145px; top:430px;">🚪</div>
+
+<div class="puerta" style="left:1180px; top:430px;">🚪</div>
+
+<div class="puerta" style="left:145px; top:620px;">🚪</div>
+
+<div class="puerta" style="left:595px; top:620px;">🚪</div>
+
+<div class="puerta" style="left:1045px; top:620px;">🚪</div>
+
+<div class="pared pared1"></div>
+<div class="pared pared2"></div>
+<div class="pared pared3"></div>
+<div class="pared pared4"></div>
+
+    <!-- FILA SUPERIOR -->
+
+    <div
+        class="zona"
+        style="
+        width:250px;
+        height:140px;
+        left:50px;
+        top:50px;">
+        BIBLIOTECA
+    </div>
+
+    <div
+        class="zona"
+        style="
+        width:250px;
+        height:140px;
+        left:500px;
+        top:50px;">
+        LABORATORIO
+    </div>
+
+    <div
+        class="zona"
+        style="
+        width:250px;
+        height:140px;
+        left:950px;
+        top:50px;">
+        DIRECCIÓN
+    </div>
+
+    <!-- FILA CENTRAL -->
+
+    <div
+        class="zona"
+        style="
+        width:250px;
+        height:140px;
+        left:50px;
+        top:320px;">
+        SALÓN A
+    </div>
+
+    <div
+        class="zona"
+        style="
+        width:350px;
+        height:220px;
+        left:450px;
+        top:280px;">
+        PATIO
+    </div>
+
+    <div
+        class="zona"
+        style="
+        width:250px;
+        height:140px;
+        left:1050px;
+        top:320px;">
+        SALÓN B
+    </div>
+
+    <!-- FILA INFERIOR -->
+
+    <div
+        class="zona"
+        style="
+        width:250px;
+        height:140px;
+        left:50px;
+        top:650px;">
+        BAÑOS
+    </div>
+
+    <div
+        class="zona"
+        style="
+        width:250px;
+        height:140px;
+        left:500px;
+        top:650px;">
+        CAFETERÍA
+    </div>
+
+    <div
+        class="zona"
+        style="
+        width:250px;
+        height:140px;
+        left:950px;
+        top:650px;">
+        BODEGA
+    </div>
+
+    <!-- OBJETOS -->
+
+    <div id="basura">🗑️</div>
+
+    <div id="pizarron">🧽</div>
+
+    <div id="silla">🪑</div>
+
+    <div id="foco">💡</div>
+    <div class="tareaExtra">🗑️</div>
+<div class="tareaExtra">🧽</div>
+<div class="tareaExtra">🪑</div>
+<div class="tareaExtra">💡</div>
+
+<div class="tareaExtra">🗑️</div>
+
+<div class="tareaExtra">🧽</div>
+
+<div class="tareaExtra">🪑</div>
+
+<div class="tareaExtra">💡</div>
+    
+    <div id="contenedorTareas"></div>
+
+    <div id="enemigo">🤖</div>
+
+    <!-- JUGADOR -->
+
+    <div id="contenedorJugador">
+
+        <div id="nombreJugador">
+            Jugador
+        </div>
+
+        <div id="jugador"></div>
+
+    </div>
+
+</div>
+    </main>
+
+    <script>
+        let personalizacion = null;
+
+        try {
+            const datosGuardados = localStorage.getItem("personalizacion");
+            personalizacion = datosGuardados
+                ? JSON.parse(datosGuardados)
+                : null;
+        } catch (error) {
+            console.error("No se pudo leer la personalización guardada:", error);
+        }
+
+        if (personalizacion && typeof personalizacion === "object") {
+            const nombreJugador = document.getElementById("nombreJugador");
+            const jugador = document.getElementById("jugador");
+
+            if (personalizacion.nombreVisible) {
+                nombreJugador.textContent = personalizacion.nombreVisible;
+            }
+
+            if (personalizacion.color) {
+                jugador.style.backgroundColor = personalizacion.color;
+            }
+        }
+    </script>
+<div id="controlesMovil">
+
+    <button id="btnArriba">⬆️</button>
+
+    <div class="filaControles">
+
+        <button id="btnIzquierda">⬅️</button>
+
+        <button id="btnInteractuar">E</button>
+
+        <button id="btnDerecha">➡️</button>
+
+    </div>
+
+    <button id="btnAbajo">⬇️</button>
+
+</div>
+<script src="/socket.io/socket.io.js"></script>
+    <script src="../js/juego.js"></script>
+</body>
+</html>

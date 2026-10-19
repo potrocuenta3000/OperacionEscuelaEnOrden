@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="200" viewBox="0 0 800 200">
+
+    <rect width="800" height="200" fill="#1B5E20"/>
+
+    <text
+        x="400"
+        y="80"
+        text-anchor="middle"
+        font-size="50"
+        font-family="Arial"
+        font-weight="bold"
+        fill="#FFFFFF">
+        OPERACIÓN:
+    </text>
+
+    <text
+        x="400"
+        y="150"
+        text-anchor="middle"
+        font-size="60"
+        font-family="Arial"
+        font-weight="bold"
+        fill="#FFD54F">
+        ESCUELA EN ORDEN
+    </text>
+
+</svg>

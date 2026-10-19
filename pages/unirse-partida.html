@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unirse a Partida</title>
+    <link
+rel="icon"
+type="image/png"
+href="../img/favicon.png">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <main class="contenedor">
+        <h1>UNIRSE A PARTIDA</h1>
+
+        <form id="formUnirse">
+            <label for="codigoSala">Ingresa el código de la sala</label>
+
+            <input
+                type="text"
+                id="codigoSala"
+                placeholder="Ejemplo: AB12CD"
+                maxlength="6"
+                autocomplete="off"
+                required
+            >
+
+            <br><br>
+
+            <button type="submit">UNIRSE</button>
+        </form>
+    </main>
+
+    <script>
+        document.getElementById("formUnirse").addEventListener("submit", (evento) => {
+            evento.preventDefault();
+
+            const codigo = document
+                .getElementById("codigoSala")
+                .value
+                .trim()
+                .toUpperCase();
+
+            if (!codigo) {
+                alert("Ingresa un código.");
+                return;
+            }
+
+            localStorage.setItem("codigoSala", codigo);
+            window.location.href = "sala-espera.html";
+        });
+    </script>
+</body>
+</html>

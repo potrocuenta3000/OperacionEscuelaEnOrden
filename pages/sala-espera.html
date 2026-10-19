@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sala de Espera</title>
+    <link
+rel="icon"
+type="image/png"
+href="../img/favicon.png">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <main class="contenedor">
+        <h1>SALA DE ESPERA</h1>
+
+        <h2>Código de sala</h2>
+        <div
+            id="codigoSala"
+            style="
+                font-size: 40px;
+                font-weight: bold;
+                color: yellow;
+                margin-bottom: 20px;
+            ">
+        </div>
+
+        <h3>Jugadores conectados</h3>
+        <div id="listaJugadores">
+            <p id="nombreJugador">Cargando...</p>
+        </div>
+
+        <br>
+
+        <button id="btnIniciarPartida" type="button">
+            INICIAR PARTIDA
+        </button>
+    </main>
+
+    <script>
+     const codigoSalaElemento =
+    document.getElementById("codigoSala");
+
+const codigoSala =
+    localStorage.getItem(
+        "codigoSala"
+    );
+
+codigoSalaElemento.textContent =
+    codigoSala;
+
+console.log(
+    "Sala cargada:",
+    codigoSala
+);
+
+codigoSalaElemento.textContent =
+    codigoSala || "SIN CÓDIGO";
+        codigoSalaElemento.textContent = codigoSala;
+
+        try {
+            const datosJugador = localStorage.getItem("jugador");
+            const jugador = datosJugador ? JSON.parse(datosJugador) : null;
+
+            document.getElementById("nombreJugador").textContent =
+                jugador?.usuario
+                    ? `👨‍🎓 ${jugador.usuario}`
+                    : "Jugador";
+        } catch (error) {
+            console.error("No se pudieron leer los datos del jugador:", error);
+            document.getElementById("nombreJugador").textContent = "Jugador";
+        }
+
+        document
+            .getElementById("btnIniciarPartida")
+            .addEventListener("click", () => {
+                window.location.href = "juego.html";
+            });
+    </script>
+</body>
+</html>

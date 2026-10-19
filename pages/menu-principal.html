@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Principal</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="contenedor">
+        <div
+            id="avatarPersonalizado"
+            class="avatar"
+            style="
+                width: 120px;
+                height: 120px;
+                border-radius: 50%;
+                background-color: green;
+                margin: 0 auto 20px;
+                border: 4px solid white;
+            ">
+        </div>
+        <h1>MENÚ PRINCIPAL</h1>
+        <h2 id="saludo">Bienvenido</h2>
+        <p id="personajeTexto"></p>
+        <p id="nombreVisibleTexto"></p>
+
+        <button id="btnCrearPartida" type="button">
+            CREAR PARTIDA
+        </button>
+
+        <br><br>
+
+        <button id="btnUnirsePartida">
+    UNIRSE A PARTIDA
+</button>
+
+<br><br>
+
+<button id="btnPersonalizar">
+    PERSONALIZAR PERSONAJE
+</button>
+
+<br><br>
+
+<button id="btnComoJugar">
+    ¿CÓMO JUGAR?
+</button>
+
+<br><br>
+
+<button id="btnCerrarSesion">
+    CERRAR SESIÓN
+</button>
+    </div>
+
+    <script>
+        function leerDato(clave) {
+            try {
+                const dato = localStorage.getItem(clave);
+                return dato ? JSON.parse(dato) : null;
+            } catch (error) {
+                console.error(`No se pudieron leer los datos de "${clave}":`, error);
+                return null;
+            }
+        }
+
+        const jugador = leerDato("jugador");
+        const personalizacion = leerDato("personalizacion");
+
+        if (jugador) {
+            document.getElementById("saludo").textContent =
+                `Bienvenido ${jugador.usuario ?? ""}`;
+
+            if (jugador.personaje) {
+                document.getElementById("personajeTexto").textContent =
+                    `Personaje: ${jugador.personaje}`;
+            }
+        }
+
+        if (personalizacion) {
+            if (personalizacion.nombreVisible) {
+                document.getElementById("nombreVisibleTexto").textContent =
+                    `Nombre visible: ${personalizacion.nombreVisible}`;
+            }
+
+            if (personalizacion.color) {
+                document.getElementById("avatarPersonalizado").style.backgroundColor =
+                    personalizacion.color;
+            }
+        }
+
+        document.getElementById("btnPersonalizar").addEventListener("click", () => {
+            window.location.href = "personalizacion.html";
+        });
+
+        document
+    .getElementById("btnComoJugar")
+    .addEventListener("click", () => {
+
+        window.location.href =
+            "como-jugar.html";
+
+    });
+       
+    document.getElementById("btnCerrarSesion").addEventListener("click", () => {
+            localStorage.removeItem("jugador");
+            window.location.href = "../index.html";
+        });
+
+       document.getElementById("btnCrearPartida").addEventListener("click", () => {
+
+    const caracteres =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    let codigoSala = "";
+
+    for(let i = 0; i < 6; i++){
+
+        const indice =
+            Math.floor(
+                Math.random() *
+                caracteres.length
+            );
+
+        codigoSala +=
+            caracteres.charAt(indice);
+    }
+
+    localStorage.setItem(
+        "codigoSala",
+        codigoSala
+    );
+
+    window.location.href =
+        "sala-espera.html";
+});
+
+        document.getElementById("btnUnirsePartida").addEventListener("click", () => {
+            window.location.href = "unirse-partida.html";
+        });
+    </script>
+</body>
+</html>
