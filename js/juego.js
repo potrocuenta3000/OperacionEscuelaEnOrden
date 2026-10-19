@@ -62,46 +62,6 @@ const btnDerecha =
 
 const btnInteractuar =
     document.getElementById("btnInteractuar");
-    btnArriba.addEventListener(
-    "mousedown",
-    () => iniciarMovimiento(0,-velocidad)
-);
-
-btnAbajo.addEventListener(
-    "mousedown",
-    () => iniciarMovimiento(0,velocidad)
-);
-
-btnIzquierda.addEventListener(
-    "mousedown",
-    () => iniciarMovimiento(-velocidad,0)
-);
-
-btnDerecha.addEventListener(
-    "mousedown",
-    () => iniciarMovimiento(velocidad,0)
-);
-
-btnArriba.addEventListener(
-    "mouseup",
-    detenerMovimiento
-);
-
-btnAbajo.addEventListener(
-    "mouseup",
-    detenerMovimiento
-);
-
-btnIzquierda.addEventListener(
-    "mouseup",
-    detenerMovimiento
-);
-
-btnDerecha.addEventListener(
-    "mouseup",
-    detenerMovimiento
-);
-
 const controlesMovil =
     document.getElementById("controlesMovil");
 const cuentaAtras =
@@ -790,39 +750,86 @@ if(btnArriba){
 
     function iniciarMovimiento(dx, dy){
 
-        clearInterval(moverInterval);
+        detenerMovimiento();
+
+        moverJugador(dx, dy);
 
         moverInterval = setInterval(
-            () => moverJugador(dx, dy),
+            () => {
+                moverJugador(dx, dy);
+            },
             50
         );
+
     }
 
     function detenerMovimiento(){
 
-        clearInterval(
-            moverInterval
-        );
+        if(moverInterval){
+
+            clearInterval(
+                moverInterval
+            );
+
+            moverInterval = null;
+        }
+
     }
 
     btnArriba.addEventListener(
         "touchstart",
-        () => iniciarMovimiento(0,-velocidad)
+        (e) => {
+
+            e.preventDefault();
+
+            iniciarMovimiento(
+                0,
+                -velocidad
+            );
+
+        }
     );
 
     btnAbajo.addEventListener(
         "touchstart",
-        () => iniciarMovimiento(0,velocidad)
+        (e) => {
+
+            e.preventDefault();
+
+            iniciarMovimiento(
+                0,
+                velocidad
+            );
+
+        }
     );
 
     btnIzquierda.addEventListener(
         "touchstart",
-        () => iniciarMovimiento(-velocidad,0)
+        (e) => {
+
+            e.preventDefault();
+
+            iniciarMovimiento(
+                -velocidad,
+                0
+            );
+
+        }
     );
 
     btnDerecha.addEventListener(
         "touchstart",
-        () => iniciarMovimiento(velocidad,0)
+        (e) => {
+
+            e.preventDefault();
+
+            iniciarMovimiento(
+                velocidad,
+                0
+            );
+
+        }
     );
 
     btnArriba.addEventListener(
@@ -842,6 +849,26 @@ if(btnArriba){
 
     btnDerecha.addEventListener(
         "touchend",
+        detenerMovimiento
+    );
+
+    btnArriba.addEventListener(
+        "touchcancel",
+        detenerMovimiento
+    );
+
+    btnAbajo.addEventListener(
+        "touchcancel",
+        detenerMovimiento
+    );
+
+    btnIzquierda.addEventListener(
+        "touchcancel",
+        detenerMovimiento
+    );
+
+    btnDerecha.addEventListener(
+        "touchcancel",
         detenerMovimiento
     );
 
@@ -849,10 +876,9 @@ if(btnArriba){
         "click",
         () => {
 
-            const tareas =
-                document.querySelectorAll(
-                    "#basura, #pizarron, #silla, #foco, .tareaExtra"
-                );
+            const tareas = document.querySelectorAll(
+                "#basura, #pizarron, #silla, #foco, .tareaExtra"
+            );
 
             for(const tarea of tareas){
 
@@ -864,7 +890,9 @@ if(btnArriba){
                 ){
                     return;
                 }
+
             }
+
         }
     );
 
